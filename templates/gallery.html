@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}{{ page.title }}{% endblock %}
+
+{% block content %}
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="container">
+    <h1 class="page-header__title fade-in">{{ page.title }}</h1>
+    <p class="page-header__subtitle fade-in">{{ page.subtitle }}</p>
+  </div>
+  <div class="wave wave--down">
+    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,20 C360,80 1080,0 1440,60 L1440,80 L0,80 Z" fill="var(--color-bg)"/>
+    </svg>
+  </div>
+</div>
+
+
+<section class="section">
+  <div class="container">
+
+    {% if images %}
+      <div class="gallery-grid">
+        {% for img in images %}
+          <!-- Each image opens its own lightbox via :target -->
+          <a href="#lb-{{ loop.index }}" class="gallery-item fade-in">
+            <img src="{{ url_for('static', filename='images/gallery/' + img) }}"
+                 alt="תמונת גלריה {{ loop.index }}"
+                 loading="lazy" />
+          </a>
+
+          <!-- Lightbox overlay -->
+          <div id="lb-{{ loop.index }}" class="lightbox">
+            <a href="#" class="lightbox__close" aria-label="סגור">✕</a>
+            <a href="#lb-{{ loop.index - 1 if loop.index > 1 else loop.index }}"
+               class="lightbox__nav lightbox__nav--prev"
+               aria-label="הקודם">&#8250;</a>
+            <img src="{{ url_for('static', filename='images/gallery/' + img) }}"
+                 alt="תמונת גלריה {{ loop.index }}" />
+            <a href="#lb-{{ loop.index + 1 if not loop.last else loop.index }}"
+               class="lightbox__nav lightbox__nav--next"
+               aria-label="הבא">&#8249;</a>
+          </div>
+        {% endfor %}
+      </div>
+
+    {% else %}
+      <div class="gallery-empty fade-in">
+        <p class="gallery-empty__text">אין תמונות בגלריה עדיין.</p>
+        {% if not STATIC_BUILD %}
+          <a href="{{ url_for('admin_login') }}" class="btn btn--outline">
+            כניסת מנהל
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% endblock %}
