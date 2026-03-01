@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% block title %}בית{% endblock %}
+
+{% block content %}
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero__content">
+    <img src="{{ url_for('static', filename='images/logo.jpeg') }}"
+         alt="{{ SITE_NAME }}" class="hero__logo" />
+    <h1 class="hero__title">{{ hero.title }}</h1>
+    <p class="hero__subtitle">{{ hero.subtitle }}</p>
+    <div class="hero__buttons">
+      <a href="{{ hero.cta_primary.url }}" class="btn btn--primary btn--large">
+        {{ hero.cta_primary.text }}
+      </a>
+      <a href="{{ hero.cta_secondary.url }}" class="btn btn--outline btn--large">
+        {{ hero.cta_secondary.text }}
+      </a>
+    </div>
+  </div>
+
+  <!-- Wave transition into stats bar -->
+  <div class="wave wave--down">
+    <svg viewBox="0 0 1440 90" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,30 C360,90 1080,0 1440,60 L1440,90 L0,90 Z"
+            fill="var(--color-primary)" opacity="0.7"/>
+      <path d="M0,50 C480,100 960,10 1440,70 L1440,90 L0,90 Z"
+            fill="var(--color-primary)"/>
+    </svg>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     STATS BAR
+════════════════════════════════════════════════════════════════════════ -->
+<section class="stats-bar">
+  <div class="container">
+    <div class="stats-bar__grid">
+      {% for stat in stats %}
+        <div class="fade-in">
+          <span class="stat__number">{{ stat.number }}</span>
+          <span class="stat__label">{{ stat.label }}</span>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     HIGHLIGHTS
+════════════════════════════════════════════════════════════════════════ -->
+<section class="section highlights">
+  <div class="container">
+    <h2 class="highlights__title fade-in">למה גן טבע הילד?</h2>
+    <div class="grid-3">
+      {% for h in highlights %}
+        <div class="card fade-in">
+          <span class="card__icon">{{ h.icon }}</span>
+          <h3 class="card__title">{{ h.title }}</h3>
+          <p class="card__text">{{ h.text }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     QUOTE
+════════════════════════════════════════════════════════════════════════ -->
+<div class="quote-block">
+  <div class="container">
+    <p class="quote-block__text fade-in">{{ quote }}</p>
+    <p class="quote-block__author fade-in">— {{ quote_author }}</p>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     INTRO TEXT
+════════════════════════════════════════════════════════════════════════ -->
+<section class="section intro-section">
+  <div class="container">
+    <h2 class="intro-section__title fade-in">{{ intro.title }}</h2>
+    <p class="intro-section__text fade-in">{{ intro.text }}</p>
+    <a href="{{ intro.cta.url }}" class="btn btn--outline fade-in">
+      {{ intro.cta.text }} ←
+    </a>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     OPEN DAY BANNER  (shown only when open_day.active is True)
+════════════════════════════════════════════════════════════════════════ -->
+{% if open_day.active %}
+  <section class="section section--light">
+    <div class="container">
+      <div class="open-day-banner fade-in">
+        <div class="open-day-banner__text">
+          <h3>{{ open_day.title }}</h3>
+          <p>{{ open_day.subtitle }}</p>
+          <p>📅 {{ open_day.date }} &nbsp;|&nbsp; 🕘 {{ open_day.time }}</p>
+          <p>📍 {{ open_day.address }}</p>
+        </div>
+        <a href="{{ url_for('contact') }}" class="btn btn--outline-white">
+          לפרטים נוספים
+        </a>
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     QUICK LINKS
+════════════════════════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header fade-in">
+      <h2 class="section-header__title">מה תרצו לדעת?</h2>
+    </div>
+    <div class="grid-4">
+      <a href="{{ url_for('about') }}" class="card fade-in" style="text-decoration:none; cursor:pointer;">
+        <span class="card__icon">🌱</span>
+        <h3 class="card__title">הגישה שלנו</h3>
+        <p class="card__text">פילוסופיה מונטסורית, ערכים וחזון הגן</p>
+      </a>
+      <a href="{{ url_for('info') }}" class="card fade-in" style="text-decoration:none; cursor:pointer;">
+        <span class="card__icon">📋</span>
+        <h3 class="card__title">מידע מעשי</h3>
+        <p class="card__text">גילאים, שעות, שכר לימוד ורישום</p>
+      </a>
+      <a href="{{ url_for('menu') }}" class="card fade-in" style="text-decoration:none; cursor:pointer;">
+        <span class="card__icon">🍽️</span>
+        <h3 class="card__title">תפריט</h3>
+        <p class="card__text">תפריט שבועי מגוון ומזין</p>
+      </a>
+      <a href="{{ url_for('calendar') }}" class="card fade-in" style="text-decoration:none; cursor:pointer;">
+        <span class="card__icon">📅</span>
+        <h3 class="card__title">לוח חופשים</h3>
+        <p class="card__text">חגים ומועדים לשנת הלימודים</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

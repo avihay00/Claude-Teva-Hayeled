@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}{{ page.title }}{% endblock %}
+
+{% block content %}
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="container">
+    <h1 class="page-header__title fade-in">{{ page.title }}</h1>
+  </div>
+  <div class="wave wave--down">
+    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,20 C360,80 1080,0 1440,60 L1440,80 L0,80 Z"
+            fill="var(--color-bg)"/>
+    </svg>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     MONTESSORI PHILOSOPHY
+════════════════════════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header fade-in">
+      <h2 class="section-header__title">{{ page.montessori.title }}</h2>
+      <p class="section-header__subtitle">{{ page.montessori.subtitle }}</p>
+    </div>
+    <div class="philosophy-text fade-in">
+      {% for para in page.montessori.paragraphs %}
+        <p>{{ para }}</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     QUOTE
+════════════════════════════════════════════════════════════════════════ -->
+<div class="quote-block">
+  <div class="container">
+    <p class="quote-block__text fade-in">עזור לי לעשות זאת בעצמי</p>
+    <p class="quote-block__author fade-in">— מריה מונטסורי</p>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     ABOUT THE GAN
+════════════════════════════════════════════════════════════════════════ -->
+<section class="section section--light">
+  <div class="container">
+    <div class="section-header fade-in">
+      <h2 class="section-header__title">{{ page.about_gan.title }}</h2>
+    </div>
+
+    {% for section in page.about_gan.sections %}
+      <div class="about-section fade-in">
+        <div class="about-section__icon">{{ section.icon }}</div>
+        <div>
+          <h3 class="about-section__title">{{ section.title }}</h3>
+          <p class="about-section__text">{{ section.text }}</p>
+        </div>
+      </div>
+    {% endfor %}
+
+  </div>
+</section>
+
+
+<!-- CTA -->
+<section class="section" style="text-align:center; background-color: var(--color-bg);">
+  <div class="container">
+    <h2 class="fade-in">רוצים לדעת עוד?</h2>
+    <p class="lead fade-in" style="margin-bottom: 2rem;">
+      מוזמנים לפנות אלינו לפרטים, לשאלות ולתיאום ביקור בגן.
+    </p>
+    <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+      <a href="{{ url_for('contact') }}" class="btn btn--primary btn--large fade-in">צרו קשר</a>
+      <a href="{{ url_for('info') }}" class="btn btn--outline btn--large fade-in">מידע מעשי</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

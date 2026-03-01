@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+{% block title %}{{ page.title }}{% endblock %}
+
+{% block content %}
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="container">
+    <h1 class="page-header__title fade-in">{{ page.title }}</h1>
+  </div>
+  <div class="wave wave--down">
+    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,20 C360,80 1080,0 1440,60 L1440,80 L0,80 Z" fill="var(--color-bg)"/>
+    </svg>
+  </div>
+</div>
+
+
+<section class="section">
+  <div class="container">
+
+    <!-- ═══ AGE GROUPS ══════════════════════════════════════════════════════ -->
+    <div class="info-card fade-in">
+      <h2 class="info-card__title">👶 {{ page.groups.title }}</h2>
+      <p class="lead">{{ page.groups.intro }}</p>
+      <div class="grid-2" style="margin-top: 1.5rem;">
+        {% for group in page.groups.items %}
+          <div class="group-card">
+            <h3 class="group-card__name">{{ group.name }}</h3>
+            <p class="group-card__age">{{ group.age }}</p>
+            <p class="group-card__detail">{{ group.capacity }}</p>
+            <p class="group-card__detail">👩‍🏫 {{ group.staff }}</p>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="note" style="margin-top: 1.5rem;">{{ page.groups.note }}</div>
+      <div class="note" style="margin-top: 0.5rem; border-color: var(--color-secondary);">
+        ⏳ {{ page.groups.team_note }}
+      </div>
+    </div>
+
+
+    <!-- ═══ HOURS ════════════════════════════════════════════════════════════ -->
+    <div class="info-card fade-in">
+      <h2 class="info-card__title">🕗 {{ page.hours.title }}</h2>
+      <div class="grid-2">
+        <div>
+          <h4 style="color: var(--color-secondary); margin-bottom: 0.5rem;">ימי פעילות</h4>
+          <p>{{ page.hours.days }}</p>
+        </div>
+        <div>
+          <h4 style="color: var(--color-secondary); margin-bottom: 0.5rem;">שעות</h4>
+          <p style="font-size: 1.4rem; font-weight: 800; color: var(--color-primary);">
+            {{ page.hours.time }}
+          </p>
+        </div>
+      </div>
+      <div class="note">{{ page.hours.closed }}</div>
+    </div>
+
+
+    <!-- ═══ TUITION ══════════════════════════════════════════════════════════ -->
+    <div class="info-card fade-in">
+      <h2 class="info-card__title">💳 {{ page.tuition.title }}</h2>
+      <p style="font-size: 2rem; font-weight: 900; color: var(--color-primary);">
+        {{ page.tuition.monthly }}
+      </p>
+    </div>
+
+
+    <!-- ═══ REGISTRATION ═════════════════════════════════════════════════════ -->
+    <div class="info-card fade-in">
+      <h2 class="info-card__title">📝 {{ page.registration.title }}</h2>
+      <p style="font-weight: 700; color: var(--color-secondary); margin-bottom: 1rem;">
+        📅 {{ page.registration.deadline }}
+      </p>
+      <p style="color: var(--color-text-light); margin-bottom: 1.5rem;">
+        ⚠️ {{ page.registration.note }}
+      </p>
+      <h4 style="margin-bottom: 0.75rem;">לרישום מוקדם:</h4>
+      <ol class="steps">
+        {% for step in page.registration.steps %}
+          <li>{{ step }}</li>
+        {% endfor %}
+      </ol>
+      <div class="note">{{ page.registration.prepayment_note }}</div>
+    </div>
+
+
+    <!-- ═══ OPEN DAY ══════════════════════════════════════════════════════════ -->
+    {% if page.open_day.active %}
+      <div class="open-day-banner fade-in">
+        <div class="open-day-banner__text">
+          <h3>{{ page.open_day.title }}</h3>
+          <p>{{ page.open_day.subtitle }}</p>
+          <p>📅 {{ page.open_day.date }} &nbsp;|&nbsp; 🕘 {{ page.open_day.time }}</p>
+          <p>📍 {{ page.open_day.address }}</p>
+        </div>
+        <a href="{{ url_for('contact') }}" class="btn btn--outline-white">
+          לפרטים
+        </a>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     WHAT TO BRING
+════════════════════════════════════════════════════════════════════════ -->
+<section class="section section--light">
+  <div class="container">
+    <div class="section-header fade-in">
+      <h2 class="section-header__title">{{ page.what_to_bring.title }}</h2>
+      <p class="section-header__subtitle">{{ page.what_to_bring.intro }}</p>
+    </div>
+
+    <div class="grid-3">
+      <!-- Stays at gan -->
+      <div class="info-card fade-in" style="margin-bottom: 0;">
+        <h3 class="info-card__title">🏠 {{ page.what_to_bring.stays_title }}</h3>
+        <ul class="checklist">
+          {% for item in page.what_to_bring.stays %}
+            <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <!-- Daily bag -->
+      <div class="info-card fade-in" style="margin-bottom: 0;">
+        <h3 class="info-card__title">🎒 {{ page.what_to_bring.daily_title }}</h3>
+        <ul class="checklist">
+          {% for item in page.what_to_bring.daily %}
+            <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <!-- Clothes -->
+      <div class="info-card fade-in" style="margin-bottom: 0;">
+        <h3 class="info-card__title">👕 {{ page.what_to_bring.clothes_title }}</h3>
+        <ul class="checklist">
+          {% for item in page.what_to_bring.clothes %}
+            <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+        <div class="note">{{ page.what_to_bring.clothes_note }}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     START OF YEAR
+════════════════════════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header fade-in">
+      <h2 class="section-header__title">{{ start_of_year.title }}</h2>
+    </div>
+
+    <!-- Parent tips -->
+    <div class="info-card fade-in">
+      <h3 class="info-card__title">💡 {{ start_of_year.tips_title }}</h3>
+      <ul class="checklist">
+        {% for tip in start_of_year.tips %}
+          <li>{{ tip }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- First week schedule -->
+    <div class="info-card fade-in">
+      <h3 class="info-card__title">📅 {{ start_of_year.week_title }}</h3>
+      <div class="menu-wrapper">
+        <table class="week-table">
+          <thead>
+            <tr>
+              <th>יום</th>
+              <th>תאריך</th>
+              <th>פרטים</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for day in start_of_year.week %}
+              <tr>
+                <td style="font-weight: 700; white-space: nowrap;">{{ day.day }}</td>
+                <td style="white-space: nowrap;">{{ day.date }}</td>
+                <td>{{ day.details }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="note" style="margin-top: 1rem;">{{ start_of_year.note }}</div>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}{{ page.title }}{% endblock %}
+
+{% block content %}
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="container">
+    <h1 class="page-header__title fade-in">{{ page.title }}</h1>
+    <p class="page-header__subtitle fade-in">ארבעה רצפי לימוד לאורך השנה</p>
+  </div>
+  <div class="wave wave--down">
+    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,20 C360,80 1080,0 1440,60 L1440,80 L0,80 Z" fill="var(--color-bg)"/>
+    </svg>
+  </div>
+</div>
+
+
+<!-- INTRO -->
+<section class="section">
+  <div class="container">
+    <p class="lead text-center fade-in" style="max-width: 750px; margin-inline: auto; margin-bottom: 3rem;">
+      {{ page.intro }}
+    </p>
+
+    <!-- LEARNING TRACKS GRID -->
+    <div class="grid-2">
+      {% for track in page.tracks %}
+        <div class="track-card fade-in">
+          <div class="track-card__icon">{{ track.icon }}</div>
+          <h3 class="track-card__title">{{ track.title }}</h3>
+          <p class="track-card__subtitle">{{ track.subtitle }}</p>
+          <p class="track-card__text">{{ track.text }}</p>
+          <ul class="track-card__topics">
+            {% for topic in track.topics %}
+              <li>{{ topic }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- CLOSING NOTE -->
+    <div class="curriculum-closing fade-in">
+      {{ page.closing }}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="{{ SITE_DESCRIPTION }}" />
+  <title>{% block title %}{{ SITE_NAME }}{% endblock %} | {{ SITE_TAGLINE }}</title>
+
+  <!-- Google Fonts — Heebo is optimized for Hebrew -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       NAVIGATION
+  ════════════════════════════════════════════════════════════════════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="container navbar__inner">
+
+      <!-- Logo (right side in RTL) -->
+      <a href="/" class="navbar__brand">
+        <img src="{{ url_for('static', filename='images/logo.jpeg') }}"
+             alt="{{ SITE_NAME }}" class="navbar__logo" />
+        <span class="navbar__name">{{ SITE_NAME }}</span>
+      </a>
+
+      <!-- Desktop nav links -->
+      <ul class="navbar__links" id="navLinks">
+        {% for link in NAV_LINKS %}
+          <li>
+            <a href="{{ link.url }}"
+               class="navbar__link {% if request.path == link.url %}navbar__link--active{% endif %}">
+              {{ link.label }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <!-- Mobile hamburger button -->
+      <button class="navbar__toggle" id="navToggle" aria-label="פתח תפריט">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+    </div>
+  </nav>
+
+  <!-- Mobile nav drawer -->
+  <div class="nav-drawer" id="navDrawer">
+    <button class="nav-drawer__close" id="navClose" aria-label="סגור תפריט">✕</button>
+    <ul class="nav-drawer__links">
+      {% for link in NAV_LINKS %}
+        <li>
+          <a href="{{ link.url }}"
+             class="nav-drawer__link {% if request.path == link.url %}nav-drawer__link--active{% endif %}">
+            {{ link.label }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="nav-overlay" id="navOverlay"></div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       FLASH MESSAGES
+  ════════════════════════════════════════════════════════════════════════ -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-container">
+        {% for category, message in messages %}
+          <div class="flash flash--{{ category }}">
+            {{ message }}
+            <button class="flash__close" onclick="this.parentElement.remove()">✕</button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       PAGE CONTENT
+  ════════════════════════════════════════════════════════════════════════ -->
+  <main id="main-content">
+    {% block content %}{% endblock %}
+  </main>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       FOOTER
+  ════════════════════════════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <!-- Wave into footer -->
+    <div class="wave wave--footer">
+      <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <path d="M0,20 C240,80 480,0 720,40 C960,80 1200,10 1440,50 L1440,80 L0,80 Z"
+              fill="var(--color-primary)" />
+      </svg>
+    </div>
+
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <img src="{{ url_for('static', filename='images/logo.jpeg') }}"
+             alt="{{ SITE_NAME }}" class="footer__logo" />
+        <p class="footer__tagline">{{ SITE_TAGLINE }}</p>
+      </div>
+
+      <div class="footer__info">
+        <h3 class="footer__title">יצירת קשר</h3>
+        <ul class="footer__list">
+          <li>
+            <a href="mailto:{{ CONTACT_EMAIL }}" class="footer__link">
+              📧 {{ CONTACT_EMAIL }}
+            </a>
+          </li>
+          <li>📍 {{ CONTACT_ADDRESS }}</li>
+          {% if CONTACT_PHONE %}
+            <li>
+              <a href="tel:{{ CONTACT_PHONE }}" class="footer__link">
+                📞 {{ CONTACT_PHONE }}
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+
+      <div class="footer__nav">
+        <h3 class="footer__title">ניווט</h3>
+        <ul class="footer__list">
+          {% for link in NAV_LINKS %}
+            <li><a href="{{ link.url }}" class="footer__link">{{ link.label }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p>© {{ SITE_NAME }} {{ SCHOOL_YEAR }}</p>
+    </div>
+  </footer>
+
+  <!-- Back to top button -->
+  <button class="back-to-top" id="backToTop" aria-label="חזור למעלה">↑</button>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>
