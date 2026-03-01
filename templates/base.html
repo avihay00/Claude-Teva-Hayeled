@@ -23,7 +23,7 @@
     <div class="container navbar__inner">
 
       <!-- Logo (right side in RTL) -->
-      <a href="/" class="navbar__brand">
+      <a href="{{ url_for('home') }}" class="navbar__brand">
         <img src="{{ url_for('static', filename='images/logo.jpeg') }}"
              alt="{{ SITE_NAME }}" class="navbar__logo" />
         <span class="navbar__name">{{ SITE_NAME }}</span>
@@ -33,8 +33,8 @@
       <ul class="navbar__links" id="navLinks">
         {% for link in NAV_LINKS %}
           <li>
-            <a href="{{ link.url }}"
-               class="navbar__link {% if request.path == link.url %}navbar__link--active{% endif %}">
+            <a href="{{ url_for(link.endpoint) }}"
+               class="navbar__link {% if request.path == url_for(link.endpoint) %}navbar__link--active{% endif %}">
               {{ link.label }}
             </a>
           </li>
@@ -57,8 +57,8 @@
     <ul class="nav-drawer__links">
       {% for link in NAV_LINKS %}
         <li>
-          <a href="{{ link.url }}"
-             class="nav-drawer__link {% if request.path == link.url %}nav-drawer__link--active{% endif %}">
+          <a href="{{ url_for(link.endpoint) }}"
+             class="nav-drawer__link {% if request.path == url_for(link.endpoint) %}nav-drawer__link--active{% endif %}">
             {{ link.label }}
           </a>
         </li>
@@ -135,7 +135,7 @@
         <h3 class="footer__title">ניווט</h3>
         <ul class="footer__list">
           {% for link in NAV_LINKS %}
-            <li><a href="{{ link.url }}" class="footer__link">{{ link.label }}</a></li>
+            <li><a href="{{ url_for(link.endpoint) }}" class="footer__link">{{ link.label }}</a></li>
           {% endfor %}
         </ul>
       </div>

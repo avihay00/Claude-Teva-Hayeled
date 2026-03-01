@@ -32,7 +32,7 @@ if __name__ == "__main__":
         shutil.rmtree("dist")
 
     freezer.freeze()
-    print(f"\n✓ Static site built → dist/")
-    print(f"  Preview: open dist/index.html")
-    print(f"  Live URL (after GH Pages enabled): "
-          f"https://avihay00.github.io/Claude-Teva-Hayeled/\n")
+    print("\nStatic site built -> dist/")
+    print("  Preview: open dist/index.html")
+    print("  Live URL (after GH Pages enabled): "
+          "https://avihay00.github.io/Claude-Teva-Hayeled/\n")

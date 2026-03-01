@@ -42,13 +42,13 @@ OPEN_DAY = {
 # ─────────────────────────────────────────────────────────────────────────────
 
 NAV_LINKS = [
-    {"label": "בית",            "url": "/"},
-    {"label": "על הגן",         "url": "/about"},
-    {"label": "מידע מעשי",      "url": "/info"},
-    {"label": "תכנית לימודים",  "url": "/curriculum"},
-    {"label": "תפריט",          "url": "/menu"},
-    {"label": "לוח חופשים",     "url": "/calendar"},
-    {"label": "צור קשר",        "url": "/contact"},
+    {"label": "בית",            "endpoint": "home"},
+    {"label": "על הגן",         "endpoint": "about"},
+    {"label": "מידע מעשי",      "endpoint": "info"},
+    {"label": "תכנית לימודים",  "endpoint": "curriculum"},
+    {"label": "תפריט",          "endpoint": "menu"},
+    {"label": "לוח חופשים",     "endpoint": "calendar"},
+    {"label": "צור קשר",        "endpoint": "contact"},
 ]
 
 
@@ -59,8 +59,8 @@ NAV_LINKS = [
 HOME_HERO = {
     "title":    "ברוכים הבאים לגן טבע הילד",
     "subtitle": "גן ילדים בגישה מונטסורית • הרצליה",
-    "cta_primary":   {"text": "לפרטים ורישום", "url": "/info"},
-    "cta_secondary": {"text": "צרו קשר",        "url": "/contact"},
+    "cta_primary":   {"text": "לפרטים ורישום", "endpoint": "info"},
+    "cta_secondary": {"text": "צרו קשר",        "endpoint": "contact"},
 }
 
 HOME_HIGHLIGHTS = [
@@ -96,7 +96,7 @@ HOME_INTRO = {
         "הגישה המונטסורית מאפשרת לכל ילד לגלות את עצמו בקצב שלו, "
         "לפתח עצמאות, אחריות ואהבה לסביבה."
     ),
-    "cta": {"text": "קראו עוד על הגישה שלנו", "url": "/about"},
+    "cta": {"text": "קראו עוד על הגישה שלנו", "endpoint": "about"},
 }
 
 # Pull-quote / motto displayed on home page
