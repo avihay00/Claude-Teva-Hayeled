@@ -60,12 +60,12 @@ def home():
     )
 
 
-@app.route("/about")
+@app.route("/about/")
 def about():
     return render_template("about.html", page=config.ABOUT_PAGE)
 
 
-@app.route("/info")
+@app.route("/info/")
 def info():
     return render_template(
         "info.html",
@@ -74,22 +74,22 @@ def info():
     )
 
 
-@app.route("/curriculum")
+@app.route("/curriculum/")
 def curriculum():
     return render_template("curriculum.html", page=config.CURRICULUM_PAGE)
 
 
-@app.route("/menu")
+@app.route("/menu/")
 def menu():
     return render_template("menu.html", page=config.MENU_PAGE)
 
 
-@app.route("/calendar")
+@app.route("/calendar/")
 def calendar():
     return render_template("calendar.html", page=config.CALENDAR_PAGE)
 
 
-@app.route("/contact", methods=["GET", "POST"])
+@app.route("/contact/", methods=["GET", "POST"])
 def contact():
     if request.method == "POST":
         name    = request.form.get("name", "").strip()
