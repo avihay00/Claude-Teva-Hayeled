@@ -1,0 +1,23 @@
+# =============================================================================
+# render.yaml  —  Render.com deployment configuration
+# =============================================================================
+# To deploy:
+#   1. Go to https://render.com and sign up / log in
+#   2. Click "New +" → "Web Service"
+#   3. Connect your GitHub repo: avihay00/Claude-Teva-Hayeled
+#   4. Render auto-detects this file and configures everything
+#   5. Add SECRET_KEY in the Render dashboard → Environment tab
+# =============================================================================
+
+services:
+  - type: web
+    name: teva-hayeled
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true   # Render generates a secure random value
+      - key: FLASK_DEBUG
+        value: false
+    autoDeploy: true          # Auto-redeploy on every push to main

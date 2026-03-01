@@ -24,7 +24,7 @@
       <h2 class="info-card__title">👶 {{ page.groups.title }}</h2>
       <p class="lead">{{ page.groups.intro }}</p>
       <div class="grid-2" style="margin-top: 1.5rem;">
-        {% for group in page.groups.items %}
+        {% for group in page.groups.group_list %}
           <div class="group-card">
             <h3 class="group-card__name">{{ group.name }}</h3>
             <p class="group-card__age">{{ group.age }}</p>
