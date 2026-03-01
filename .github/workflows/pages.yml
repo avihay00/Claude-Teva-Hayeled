@@ -1,0 +1,64 @@
+# =============================================================================
+# pages.yml  —  Auto-deploy static site to GitHub Pages on every push to main
+# =============================================================================
+# After merging this PR:
+#   1. Go to GitHub repo → Settings → Pages
+#   2. Under "Source" select: "GitHub Actions"
+#   3. Save — the site will be live at:
+#      https://avihay00.github.io/Claude-Teva-Hayeled/
+# =============================================================================
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:   # Allow manual trigger from GitHub Actions tab
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one deployment at a time
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Build static site
+        run: python freeze.py
+        env:
+          STATIC_BUILD: "true"
+          SECRET_KEY: "build-time-key-not-used-in-static"
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

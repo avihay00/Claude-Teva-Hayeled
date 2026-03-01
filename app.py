@@ -37,6 +37,8 @@ def inject_globals():
         "CONTACT_ADDRESS":  config.CONTACT_ADDRESS,
         "CONTACT_PHONE":    config.CONTACT_PHONE,
         "SCHOOL_YEAR":      config.SCHOOL_YEAR,
+        # True when building the static GitHub Pages export (set by freeze.py)
+        "STATIC_BUILD":     os.getenv("STATIC_BUILD", "false").lower() == "true",
     }
 
 

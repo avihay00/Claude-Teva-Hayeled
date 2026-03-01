@@ -66,35 +66,46 @@
       <div class="contact-form fade-in">
         <h2 style="margin-bottom: 1.5rem; color: var(--color-primary);">שלחו לנו הודעה</h2>
 
-        <form method="POST" action="{{ url_for('contact') }}" novalidate>
-          <div class="form-group">
-            <label class="form-label" for="name">שם מלא <span>*</span></label>
-            <input type="text" id="name" name="name" class="form-input"
-                   placeholder="השם שלכם" required />
+        {% if STATIC_BUILD %}
+          <!-- Static build: no backend available, show mailto link instead -->
+          <div class="note" style="font-size: 1.1rem; line-height: 2;">
+            <p>לשליחת הודעה ישירות במייל:</p>
+            <a href="mailto:{{ page.email }}" class="btn btn--primary btn--large"
+               style="margin-top: 1rem; display: inline-flex;">
+              ✉️ {{ page.email }}
+            </a>
           </div>
+        {% else %}
+          <form method="POST" action="{{ url_for('contact') }}" novalidate>
+            <div class="form-group">
+              <label class="form-label" for="name">שם מלא <span>*</span></label>
+              <input type="text" id="name" name="name" class="form-input"
+                     placeholder="השם שלכם" required />
+            </div>
 
-          <div class="form-group">
-            <label class="form-label" for="email">אימייל <span>*</span></label>
-            <input type="email" id="email" name="email" class="form-input"
-                   placeholder="your@email.com" required dir="ltr" style="text-align:left;" />
-          </div>
+            <div class="form-group">
+              <label class="form-label" for="email">אימייל <span>*</span></label>
+              <input type="email" id="email" name="email" class="form-input"
+                     placeholder="your@email.com" required dir="ltr" style="text-align:left;" />
+            </div>
 
-          <div class="form-group">
-            <label class="form-label" for="phone">טלפון</label>
-            <input type="tel" id="phone" name="phone" class="form-input"
-                   placeholder="050-000-0000" dir="ltr" style="text-align:left;" />
-          </div>
+            <div class="form-group">
+              <label class="form-label" for="phone">טלפון</label>
+              <input type="tel" id="phone" name="phone" class="form-input"
+                     placeholder="050-000-0000" dir="ltr" style="text-align:left;" />
+            </div>
 
-          <div class="form-group">
-            <label class="form-label" for="message">הודעה <span>*</span></label>
-            <textarea id="message" name="message" class="form-textarea"
-                      placeholder="כתבו לנו — שאלות, בקשה לפגישה, או כל דבר אחר..." required></textarea>
-          </div>
+            <div class="form-group">
+              <label class="form-label" for="message">הודעה <span>*</span></label>
+              <textarea id="message" name="message" class="form-textarea"
+                        placeholder="כתבו לנו — שאלות, בקשה לפגישה, או כל דבר אחר..." required></textarea>
+            </div>
 
-          <button type="submit" class="btn btn--primary btn--large" style="width:100%;">
-            שלחו הודעה →
-          </button>
-        </form>
+            <button type="submit" class="btn btn--primary btn--large" style="width:100%;">
+              שלחו הודעה →
+            </button>
+          </form>
+        {% endif %}
       </div>
 
     </div>
