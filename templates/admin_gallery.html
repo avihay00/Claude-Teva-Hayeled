@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}ניהול גלריה{% endblock %}
+
+{% block content %}
+
+<section class="section">
+  <div class="container">
+
+    <!-- Header row -->
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; flex-wrap:wrap; gap:1rem;">
+      <h1 style="color:var(--color-primary); font-size:1.8rem;">ניהול גלריה</h1>
+      <div style="display:flex; gap:1rem; align-items:center;">
+        <a href="{{ url_for('gallery') }}" class="btn btn--outline">← צפייה בגלריה</a>
+        <a href="{{ url_for('admin_logout') }}" class="btn btn--outline"
+           style="border-color:#c00; color:#c00;">יציאה</a>
+      </div>
+    </div>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div style="margin-bottom:1.5rem;">
+          {% for category, message in messages %}
+            <div class="flash flash--{{ category }}">
+              {{ message }}
+              <button class="flash__close" onclick="this.parentElement.remove()">✕</button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Upload form -->
+    <div class="card" style="padding:2rem; margin-bottom:2.5rem;">
+      <h2 style="font-size:1.2rem; margin-bottom:1.2rem; color:var(--color-secondary);">
+        העלאת תמונות
+      </h2>
+      <form method="POST" action="{{ url_for('admin_upload') }}"
+            enctype="multipart/form-data">
+        <div class="form-group" style="margin-bottom:1rem;">
+          <label class="form-label" for="images">
+            בחרו תמונות (JPG, PNG, GIF, WebP — עד 8MB כל אחת)
+          </label>
+          <input type="file" id="images" name="images"
+                 class="form-input" accept="image/*" multiple
+                 style="padding:0.5rem;" />
+        </div>
+        <button type="submit" class="btn btn--primary">העלאה</button>
+      </form>
+    </div>
+
+    <!-- Existing images -->
+    {% if images %}
+      <h2 style="font-size:1.2rem; margin-bottom:1.2rem; color:var(--color-secondary);">
+        תמונות קיימות ({{ images|length }})
+      </h2>
+      <div class="admin-grid">
+        {% for img in images %}
+          <div class="admin-thumb">
+            <img src="{{ url_for('static', filename='images/gallery/' + img) }}"
+                 alt="{{ img }}" loading="lazy" />
+            <form method="POST"
+                  action="{{ url_for('admin_delete', filename=img) }}"
+                  onsubmit="return confirm('למחוק את התמונה?')">
+              <button type="submit" class="admin-thumb__delete" aria-label="מחק">✕</button>
+            </form>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p style="color:var(--color-text-light); text-align:center; padding:2rem 0;">
+        אין תמונות בגלריה עדיין.
+      </p>
+    {% endif %}
+
+  </div>
+</section>
+
+{% endblock %}

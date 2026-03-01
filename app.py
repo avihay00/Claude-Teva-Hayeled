@@ -6,11 +6,13 @@
 # =============================================================================
 
 import os
+import uuid
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from functools import wraps
 
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from dotenv import load_dotenv
 
 import config
@@ -105,6 +107,109 @@ def contact():
             flash(config.CONTACT_PAGE["form_error"], "error")
 
     return render_template("contact.html", page=config.CONTACT_PAGE)
+
+
+@app.route("/gallery/")
+def gallery():
+    folder = os.path.join(app.root_path, "static", "images", "gallery")
+    os.makedirs(folder, exist_ok=True)
+    allowed = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
+    images = sorted(
+        f for f in os.listdir(folder)
+        if os.path.splitext(f.lower())[1] in allowed
+    )
+    return render_template("gallery.html", page=config.GALLERY_PAGE, images=images)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Admin — only registered on the live server (skipped during static build)
+# ─────────────────────────────────────────────────────────────────────────────
+
+_STATIC_BUILD = os.getenv("STATIC_BUILD", "false").lower() == "true"
+
+if not _STATIC_BUILD:
+    _ALLOWED_EXTS = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
+    _GALLERY_FOLDER = os.path.join(os.path.dirname(__file__), "static", "images", "gallery")
+    _MAX_UPLOAD_BYTES = 8 * 1024 * 1024  # 8 MB
+
+    def _require_admin(f):
+        @wraps(f)
+        def decorated(*args, **kwargs):
+            if not session.get("admin"):
+                return redirect(url_for("admin_login"))
+            return f(*args, **kwargs)
+        return decorated
+
+    @app.route("/admin/login/", methods=["GET", "POST"])
+    def admin_login():
+        if session.get("admin"):
+            return redirect(url_for("admin_gallery"))
+        if request.method == "POST":
+            password = request.form.get("password", "")
+            admin_pw = os.getenv("ADMIN_PASSWORD", "")
+            if admin_pw and password == admin_pw:
+                session["admin"] = True
+                return redirect(url_for("admin_gallery"))
+            flash("סיסמה שגויה.", "error")
+        return render_template("admin_login.html")
+
+    @app.route("/admin/logout/")
+    def admin_logout():
+        session.pop("admin", None)
+        return redirect(url_for("home"))
+
+    @app.route("/admin/gallery/")
+    @_require_admin
+    def admin_gallery():
+        os.makedirs(_GALLERY_FOLDER, exist_ok=True)
+        images = sorted(
+            f for f in os.listdir(_GALLERY_FOLDER)
+            if os.path.splitext(f.lower())[1] in _ALLOWED_EXTS
+        )
+        return render_template("admin_gallery.html", images=images)
+
+    @app.route("/admin/gallery/upload/", methods=["POST"])
+    @_require_admin
+    def admin_upload():
+        files = request.files.getlist("images")
+        saved = 0
+        for file in files:
+            if not file or not file.filename:
+                continue
+            ext = os.path.splitext(file.filename.lower())[1]
+            if ext not in _ALLOWED_EXTS:
+                flash(f"סוג קובץ לא נתמך: {file.filename}", "error")
+                continue
+            # Read to check size before saving
+            data = file.read()
+            if len(data) > _MAX_UPLOAD_BYTES:
+                flash(f"הקובץ גדול מדי (מקסימום 8MB): {file.filename}", "error")
+                continue
+            filename = uuid.uuid4().hex + ext
+            dest = os.path.join(_GALLERY_FOLDER, filename)
+            with open(dest, "wb") as fh:
+                fh.write(data)
+            saved += 1
+        if saved:
+            flash(f"הועלו {saved} תמונות בהצלחה.", "success")
+        return redirect(url_for("admin_gallery"))
+
+    @app.route("/admin/gallery/delete/<filename>/", methods=["POST"])
+    @_require_admin
+    def admin_delete(filename):
+        # Validate: no path traversal, must be in gallery folder
+        safe = os.path.basename(filename)
+        ext = os.path.splitext(safe.lower())[1]
+        if ext not in _ALLOWED_EXTS:
+            flash("שגיאה: קובץ לא תקין.", "error")
+            return redirect(url_for("admin_gallery"))
+        path = os.path.join(_GALLERY_FOLDER, safe)
+        if os.path.isfile(path):
+            os.remove(path)
+            flash(f"התמונה נמחקה.", "success")
+        else:
+            flash("הקובץ לא נמצא.", "error")
+        return redirect(url_for("admin_gallery"))
 
 
 # ─────────────────────────────────────────────────────────────────────────────

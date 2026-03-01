@@ -1464,3 +1464,161 @@ p:last-child { margin-bottom: 0; }
     align-items: center;
   }
 }
+
+
+/* =============================================================================
+   GALLERY
+============================================================================= */
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.gallery-item {
+  display: block;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.gallery-item:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.gallery-item img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+/* ── Lightbox (CSS :target trick — no JS required) ── */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.88);
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox:target {
+  display: flex;
+}
+
+.lightbox img {
+  max-width: 90vw;
+  max-height: 88vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+}
+
+.lightbox__close {
+  position: absolute;
+  top: 1.2rem;
+  left: 1.5rem;    /* left in RTL = far side */
+  color: #fff;
+  font-size: 1.8rem;
+  text-decoration: none;
+  line-height: 1;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+.lightbox__close:hover { opacity: 1; }
+
+.lightbox__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #fff;
+  font-size: 3rem;
+  text-decoration: none;
+  opacity: 0.7;
+  padding: 0.5rem 1rem;
+  transition: opacity 0.2s;
+}
+.lightbox__nav:hover { opacity: 1; }
+.lightbox__nav--prev { right: 1.5rem; }   /* RTL: prev is on the right */
+.lightbox__nav--next { left: 1.5rem; }
+
+/* ── Empty gallery state ── */
+.gallery-empty {
+  text-align: center;
+  padding: 4rem 0;
+}
+.gallery-empty__text {
+  color: var(--color-text-light);
+  font-size: 1.15rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 540px) {
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* =============================================================================
+   ADMIN PANEL
+============================================================================= */
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.admin-thumb {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+
+.admin-thumb img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.admin-thumb__delete {
+  position: absolute;
+  top: 0.4rem;
+  left: 0.4rem;
+  background: rgba(180, 0, 0, 0.85);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 1.8rem;
+  height: 1.8rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.admin-thumb__delete:hover {
+  background: #c00;
+}
+
+@media (max-width: 900px) {
+  .admin-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 600px) {
+  .admin-grid { grid-template-columns: repeat(2, 1fr); }
+}
