@@ -19,8 +19,12 @@ from flask_frozen import Freezer
 from app import app
 
 # ── Frozen-Flask configuration ─────────────────────────────────────────────
+# FREEZER_BASE_URL tells Frozen-Flask the site is hosted at the GH Pages subpath.
+# This makes url_for() generate correct absolute paths (/Claude-Teva-Hayeled/about/)
+# so all links resolve correctly on the live site.
+app.config["FREEZER_BASE_URL"]                = "https://avihay00.github.io/Claude-Teva-Hayeled/"
 app.config["FREEZER_DESTINATION"]             = "dist"
-app.config["FREEZER_RELATIVE_URLS"]           = True   # use ../static/... paths
+app.config["FREEZER_RELATIVE_URLS"]           = False  # keep absolute paths (/Claude-Teva-Hayeled/...)
 app.config["FREEZER_IGNORE_MIMETYPE_WARNINGS"] = True
 app.config["FREEZER_REMOVE_EXTRA_FILES"]      = True   # clean old files
 
