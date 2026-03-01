@@ -13,10 +13,10 @@
     <h1 class="hero__title">{{ hero.title }}</h1>
     <p class="hero__subtitle">{{ hero.subtitle }}</p>
     <div class="hero__buttons">
-      <a href="{{ hero.cta_primary.url }}" class="btn btn--primary btn--large">
+      <a href="{{ url_for(hero.cta_primary.endpoint) }}" class="btn btn--primary btn--large">
         {{ hero.cta_primary.text }}
       </a>
-      <a href="{{ hero.cta_secondary.url }}" class="btn btn--outline btn--large">
+      <a href="{{ url_for(hero.cta_secondary.endpoint) }}" class="btn btn--outline btn--large">
         {{ hero.cta_secondary.text }}
       </a>
     </div>
@@ -88,7 +88,7 @@
   <div class="container">
     <h2 class="intro-section__title fade-in">{{ intro.title }}</h2>
     <p class="intro-section__text fade-in">{{ intro.text }}</p>
-    <a href="{{ intro.cta.url }}" class="btn btn--outline fade-in">
+    <a href="{{ url_for(intro.cta.endpoint) }}" class="btn btn--outline fade-in">
       {{ intro.cta.text }} ←
     </a>
   </div>
