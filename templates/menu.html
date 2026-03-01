@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}{{ page.title }}{% endblock %}
+
+{% block content %}
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="container">
+    <h1 class="page-header__title fade-in">{{ page.title }}</h1>
+    <p class="page-header__subtitle fade-in">{{ page.intro }}</p>
+  </div>
+  <div class="wave wave--down">
+    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,20 C360,80 1080,0 1440,60 L1440,80 L0,80 Z" fill="var(--color-bg)"/>
+    </svg>
+  </div>
+</div>
+
+
+<section class="section">
+  <div class="container">
+    <div class="menu-wrapper fade-in">
+      <table class="menu-table">
+        <!-- HEADER ROW -->
+        <thead>
+          <tr>
+            <th>ארוחה</th>
+            <th>תת-קטגוריה</th>
+            {% for day in page.days %}
+              <th>{{ day }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for meal_item in page.menu_table %}
+
+            {# ── Meal with a single value spanning all 5 days ── #}
+            {% if 'single' in meal_item %}
+              <tr class="meal-single">
+                <td class="meal-name" colspan="2">{{ meal_item.meal }}</td>
+                <td colspan="{{ page.days | length }}">{{ meal_item.single }}</td>
+              </tr>
+
+            {# ── Meal with multiple sub-rows ── #}
+            {% else %}
+              {% for row in meal_item.rows %}
+                <tr>
+                  {% if loop.first %}
+                    <td class="meal-name" rowspan="{{ meal_item.rows | length }}">
+                      {{ meal_item.meal }}
+                    </td>
+                  {% endif %}
+
+                  {# Sub-label column (show dash if None) #}
+                  {% if row.sub %}
+                    <td class="sub-label">{{ row.sub }}</td>
+                  {% else %}
+                    <td class="sub-label">—</td>
+                  {% endif %}
+
+                  {# One cell per day #}
+                  {% for day_item in row.days %}
+                    <td>{{ day_item }}</td>
+                  {% endfor %}
+                </tr>
+              {% endfor %}
+            {% endif %}
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note fade-in" style="margin-top: 1.5rem;">{{ page.note }}</div>
+  </div>
+</section>
+
+{% endblock %}
